@@ -1,4 +1,5 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
+import path from "path";
 import pug from "pug";
 import {
   createCoinFlip,
@@ -7,7 +8,7 @@ import {
 } from "../../lib/database";
 
 const db = createDatabase();
-const view = pug.compileFile("./views/flip.pug");
+const view = pug.compileFile(path.join(process.cwd(), "views", "flip.pug"));
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   const requestIp = request.headers["x-forwarded-for"] as string;
@@ -19,7 +20,5 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     coinFlip = createCoinFlip(db, uuid, requestIp);
   }
 
-  const html = view({ coinFlip });
-
-  response.status(200).send(html);
+  response.status(200).send(view({ coinFlip }));
 };
