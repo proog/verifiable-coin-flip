@@ -1,5 +1,4 @@
 export type StoredCoinFlip = {
-  id: number;
   uuid: string;
   result: boolean | null;
   createdAt: Date;
