@@ -20,5 +20,5 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     coinFlip = await db.createCoinFlip(uuid, requestIp);
   }
 
-  response.status(200).send(view({ coinFlip }));
+  response.status(200).send(view({ coinFlip, requestIp }));
 };
