@@ -1,12 +1,23 @@
-doctype html
-html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(http-equiv="X-UA-Compatible", content="IE=edge")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx", crossorigin="anonymous")
-    title Document
-  body
-    .container
-      p
-        a(href='/api/flip/' + uuid) Go here: #{uuid}
+extends layout.pug
+
+block head
+  script(type="application/javascript").
+    function copyLink() {
+      var e = document.getElementById("link");
+      e.select();
+      e.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(e.value);
+    }
+
+block content
+  section.hero.is-info
+    .hero-body
+      h1.title CoinFlippin'!
+      p.subtitle Your trusted Coin Flips as a Service (CFaaS) solution
+  section.section
+    label.label(for="link") Send this link (don't visit it yet!)
+    .field.has-addons
+      p.control.is-expanded
+        input#link.input.is-large(type="text", readonly, value=link)
+      p.control
+        button.button.is-info.is-large(onclick="copyLink()") Copy link
