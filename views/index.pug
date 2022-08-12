@@ -14,10 +14,27 @@ block content
     .hero-body
       h1.title CoinFlippin'!
       p.subtitle Your trusted Coin Flips as a Service (CFaaS) solution
+
   section.section
-    label.label(for="link") Send this link (don't visit it yet!)
-    .field.has-addons
-      p.control.is-expanded
-        input#link.input.is-large(type="text", readonly, value=link)
-      p.control
-        button.button.is-info.is-large(onclick="copyLink()") Copy link
+    form(action="/flip", method="post")
+      .field
+        label.label(for="headsName") Label for "heads"
+        .control
+          input#headsName.input.is-large(
+            type="text",
+            required,
+            name="headsName",
+            value=headsName
+          )
+      .field
+        label.label(for="tailsName") Label for "tails"
+        .control
+          input#tailsName.input.is-large(
+            type="text",
+            required,
+            name="tailsName",
+            value=tailsName
+          )
+      .field
+        .control
+          button.button(type="submit") Generate link

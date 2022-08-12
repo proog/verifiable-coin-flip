@@ -1,0 +1,23 @@
+extends layout.pug
+
+block head
+  script(type="application/javascript").
+    function copyLink() {
+      var e = document.getElementById("link");
+      e.select();
+      e.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(e.value);
+    }
+
+block content
+  section.hero.is-info
+    .hero-body
+      h1.title CoinFlippin'!
+      p.subtitle Your trusted Coin Flips as a Service (CFaaS) solution
+  section.section
+    label.label(for="link") Send this link (don't visit it yet!)
+    .field.has-addons
+      .control.is-expanded
+        input#link.input.is-large(type="text", readonly, value=link)
+      .control
+        button.button.is-info.is-large(onclick="copyLink()") Copy link

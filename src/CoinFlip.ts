@@ -1,6 +1,7 @@
-export type StoredCoinFlip = {
+export type CoinFlip = {
   uuid: string;
-  result: boolean | null;
+  result: string | null;
+  options: string[];
   createdAt: Date;
   createdIp: string;
   flippedAt: Date | null;

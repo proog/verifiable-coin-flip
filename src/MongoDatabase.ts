@@ -1,6 +1,6 @@
 import { Collection, MongoClient } from "mongodb";
+import { CoinFlip } from "./CoinFlip";
 import { IDatabase } from "./IDatabase";
-import { StoredCoinFlip } from "./types";
 
 export class MongoDatabase implements IDatabase {
   private readonly client: MongoClient;
@@ -15,31 +15,21 @@ export class MongoDatabase implements IDatabase {
     this.coinFlips.createIndex({ uuid: 1 }, { unique: true });
   }
 
-  async getCoinFlip(uuid: string): Promise<StoredCoinFlip | undefined> {
+  async getCoinFlip(uuid: string): Promise<CoinFlip | undefined> {
     return (await this.coinFlips.findOne({ uuid })) ?? undefined;
   }
 
-  async createCoinFlip(
-    uuid: string,
-    createdIp: string
-  ): Promise<StoredCoinFlip> {
-    const createdAt = new Date();
-    const coinFlip = {
-      uuid,
-      result: Math.random() < 0.5,
-      createdAt,
-      createdIp,
-      flippedAt: createdAt,
-      flippedIp: createdIp,
-    };
-
+  async createCoinFlip(coinFlip: CoinFlip): Promise<void> {
     await this.coinFlips.insertOne(coinFlip);
-    return coinFlip;
   }
 
-  private get coinFlips(): Collection<StoredCoinFlip> {
+  async updateCoinFlip(coinFlip: CoinFlip): Promise<void> {
+    await this.coinFlips.replaceOne({ uuid: coinFlip.uuid }, coinFlip);
+  }
+
+  private get coinFlips(): Collection<CoinFlip> {
     return this.client
       .db(this.databaseName)
-      .collection<StoredCoinFlip>(this.collectionName);
+      .collection<CoinFlip>(this.collectionName);
   }
 }
