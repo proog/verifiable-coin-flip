@@ -13,7 +13,7 @@ app.set("view engine", "pug");
 app.use(express.urlencoded());
 
 app.get("/", (req, res) =>
-  res.status(200).render("index", { headsName: "heads", tailsName: "tails" })
+  res.status(200).render("index", { options: ["heads", "tails"] })
 );
 
 app.post("/flip", async (req, res, next) => {

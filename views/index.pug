@@ -9,6 +9,30 @@ block head
       navigator.clipboard.writeText(e.value);
     }
 
+    function addOption() {
+      var input = document.createElement("input");
+      input.type = "text";
+      input.required = true;
+      input.name = "options[]";
+      input.placeholder = "additional option name";
+      input.classList.add("input", "is-large");
+
+      var control = document.createElement("div");
+      control.classList.add("control", "is-flex-grow-1");
+      control.appendChild(input);
+
+      var deleteButton = document.createElement("button");
+      deleteButton.classList.add("delete", "is-large");
+
+      var field = document.createElement("div");
+      field.classList.add("field", "is-grouped", "is-flex", "is-align-items-center");
+      field.appendChild(control);
+      field.appendChild(deleteButton);
+
+      var options = document.getElementById("options");
+      options.appendChild(field);
+    }
+
 block content
   section.hero.is-info
     .hero-body
@@ -17,24 +41,20 @@ block content
 
   section.section
     form(action="/flip", method="post")
+      #options.field
+        label.label Options
+        each option in options
+          .field
+            .control
+              input.input.is-large(
+                type="text",
+                required,
+                name="options[]",
+                placeholder="option name",
+                value=option
+              )
       .field
-        label.label(for="headsName") Label for "heads"
-        .control
-          input#headsName.input.is-large(
-            type="text",
-            required,
-            name="headsName",
-            value=headsName
-          )
-      .field
-        label.label(for="tailsName") Label for "tails"
-        .control
-          input#tailsName.input.is-large(
-            type="text",
-            required,
-            name="tailsName",
-            value=tailsName
-          )
+        button.button(type="button", onclick="addOption()") Add option
       .field
         .control
           button.button(type="submit") Generate link

@@ -1,19 +1,24 @@
 extends layout.pug
 
 block content
+  - var dateTimeFormat = new Intl.DateTimeFormat("en", { dateStyle: "medium", timeStyle: "medium" });
+
   section.hero(class=coinFlip.result ? "is-success" : "is-warning")
     .hero-body
       h1.title It's #{ coinFlip.result }!
-      p.subtitle
-        | Created at #{ coinFlip.createdAt }
-        if coinFlip.createdIp === requestIp
-          |
-          | by you
-      p.subtitle
-        | Flipped at #{ coinFlip.flippedAt }
-        if coinFlip.flippedIp === requestIp
-          |
-          | by you
+      p.subtitle Flipped at #{ dateTimeFormat.format(coinFlip.flippedAt) }
+        |
+        | by #{ coinFlip.flippedIp === requestIp ? "you" : "someone else" }
 
-  section.section
+  section.section.content
+    h2 About this coin flip
+    p Created at #{ dateTimeFormat.format(coinFlip.createdAt) }
+      |
+      | by #{ coinFlip.createdIp === requestIp ? "you" : "someone else" }
+
+    h3 Options
+    ul
+      each option in coinFlip.options
+        li= option
+
     a.button.is-link(href="/") Flip another coin
