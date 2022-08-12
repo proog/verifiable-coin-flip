@@ -2,13 +2,6 @@ extends layout.pug
 
 block head
   script(type="application/javascript").
-    function copyLink() {
-      var e = document.getElementById("link");
-      e.select();
-      e.setSelectionRange(0, 99999);
-      navigator.clipboard.writeText(e.value);
-    }
-
     function addOption() {
       var input = document.createElement("input");
       input.type = "text";
@@ -31,6 +24,10 @@ block head
 
       var options = document.getElementById("options");
       options.appendChild(field);
+
+      deleteButton.addEventListener("click", () => {
+        options.removeChild(field);
+      });
     }
 
 block content
