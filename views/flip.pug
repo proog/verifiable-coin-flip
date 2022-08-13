@@ -1,5 +1,13 @@
 extends layout.pug
 
+block head
+  meta(name="title", content="CoinFlippin'")
+
+  if coinFlip.result
+    meta(name="description", content="It's " + coinFlip.result + "!")
+  else
+    meta(name="description", content="Not flipped yet!")
+
 block content
   - var dateTimeFormat = new Intl.DateTimeFormat("en", { dateStyle: "medium", timeStyle: "long" });
 
