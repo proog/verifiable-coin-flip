@@ -2,6 +2,7 @@ import express from "express";
 import { v4 as uuidv4 } from "uuid";
 import { errorHandler, notFoundHandler } from "./errors";
 import { createCoinFlip, createDatabase, randomElement } from "./helpers";
+import { HttpError } from "./HttpError";
 import { IDatabase } from "./IDatabase";
 import { generateLink, getOptions } from "./web";
 
@@ -36,9 +37,7 @@ app.get("/flip/:uuid", async (req, res, next) => {
     let coinFlip = await db.getCoinFlip(uuid);
 
     if (!coinFlip) {
-      const options = ["heads", "tails"];
-      coinFlip = createCoinFlip(uuid, options, requestIp);
-      await db.createCoinFlip(coinFlip);
+      throw new HttpError(404, "Coin flip not found");
     }
 
     if (!coinFlip.result) {
