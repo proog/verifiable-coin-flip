@@ -1,9 +1,9 @@
 extends layout.pug
 
 block content
-  - var dateTimeFormat = new Intl.DateTimeFormat("en", { dateStyle: "medium", timeStyle: "medium" });
+  - var dateTimeFormat = new Intl.DateTimeFormat("en", { dateStyle: "medium", timeStyle: "long" });
 
-  section.hero(class=coinFlip.result ? "is-success" : "is-warning")
+  section.hero.is-success
     .hero-body
       h1.title It's #{ coinFlip.result }!
       p.subtitle Flipped at #{ dateTimeFormat.format(coinFlip.flippedAt) }
@@ -21,4 +21,5 @@ block content
       each option in coinFlip.options
         li= option
 
+  section.section
     a.button.is-link(href="/") Flip another coin
