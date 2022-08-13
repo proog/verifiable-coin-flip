@@ -11,11 +11,11 @@ block head
       input.classList.add("input", "is-large");
 
       var control = document.createElement("div");
-      control.classList.add("control", "is-flex-grow-1");
+      control.classList.add("is-flex-grow-1");
       control.appendChild(input);
 
       var deleteButton = document.createElement("button");
-      deleteButton.classList.add("delete", "is-large");
+      deleteButton.classList.add("delete", "is-large", "ml-4");
 
       var field = document.createElement("div");
       field.classList.add("field", "is-grouped", "is-flex", "is-align-items-center");
@@ -24,6 +24,7 @@ block head
 
       var options = document.getElementById("options");
       options.appendChild(field);
+      input.focus();
 
       deleteButton.addEventListener("click", () => {
         options.removeChild(field);
@@ -37,21 +38,21 @@ block content
       p.subtitle Your trusted Coin Flips as a Service (CFaaS) solution
 
   section.section
+    h2.title.is-2 Create coin flip
     form(action="/flip", method="post")
+      label.label Options
       #options.field
-        label.label Options
         each option in options
           .field
-            .control
-              input.input.is-large(
-                type="text",
-                required,
-                name="options[]",
-                placeholder="option name",
-                value=option
-              )
+            input.input.is-large(
+              type="text",
+              required,
+              name="options[]",
+              placeholder="option name",
+              value=option
+            )
       .field
-        button.button(type="button", onclick="addOption()") Add option
-      .field
+        button.button.is-info.is-light(type="button", onclick="addOption()") Add option
+      .field.mt-6
         .control
-          button.button(type="submit") Generate link
+          button.button.is-primary(type="submit") Generate link

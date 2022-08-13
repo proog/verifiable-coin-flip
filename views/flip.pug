@@ -23,7 +23,7 @@ block content
       .hero-body
         h1.title Not flipped yet!
         form(action="/flip/" + coinFlip.uuid, method="post")
-          button.button(type="submit") Flip this coin
+          button.button.is-primary.is-large(type="submit") Flip this coin
 
   section.section.content
     h2 About this coin flip
@@ -37,4 +37,4 @@ block content
         li= option
 
   section.section
-    a.button.is-link(href="/") Flip another coin
+    a.button.is-info.is-light(href="/") Flip another coin
