@@ -3,12 +3,19 @@ extends layout.pug
 block content
   - var dateTimeFormat = new Intl.DateTimeFormat("en", { dateStyle: "medium", timeStyle: "long" });
 
-  section.hero.is-success
-    .hero-body
-      h1.title It's #{ coinFlip.result }!
-      p.subtitle Flipped at #{ dateTimeFormat.format(coinFlip.flippedAt) }
-        |
-        | by #{ coinFlip.flippedIp === requestIp ? "you" : "someone else" }
+  if coinFlip.result
+    section.hero.is-success
+      .hero-body
+        h1.title It's #{ coinFlip.result }!
+        p.subtitle Flipped at #{ dateTimeFormat.format(coinFlip.flippedAt) }
+          |
+          | by #{ coinFlip.flippedIp === requestIp ? "you" : "someone else" }
+  else
+    section.hero.is-info
+      .hero-body
+        h1.title Not flipped yet!
+        form(action="/flip/" + coinFlip.uuid, method="post")
+          button.button(type="submit") Flip this coin
 
   section.section.content
     h2 About this coin flip
