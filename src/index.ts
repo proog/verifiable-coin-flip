@@ -6,13 +6,17 @@ import { errorHandler, notFoundHandler } from "./errors";
 import { createCoinFlip, createDatabase, randomElement } from "./helpers";
 import { HttpError } from "./HttpError";
 import { IDatabase } from "./IDatabase";
-import { generateLink, getOptions } from "./web";
+import { generateLink, getOptions, getRequestIp } from "./web";
 
 let db: IDatabase;
 
 const app = express();
-app.set("trust proxy", process.env.TRUST_PROXY === "true");
 app.set("view engine", "pug");
+
+if (process.env.TRUST_PROXY === "true") {
+  app.set("trust proxy", true);
+}
+
 app.use(express.urlencoded());
 
 app.param("uuid", async (req, _res, next, uuid: string) => {
@@ -38,7 +42,8 @@ app.post(
   "/flip",
   asyncHandler(async (req, res) => {
     const options = getOptions(req.body);
-    const coinFlip = createCoinFlip(uuidv4(), options, req.ip);
+    const requestIp = getRequestIp(req);
+    const coinFlip = createCoinFlip(uuidv4(), options, requestIp);
     await db.createCoinFlip(coinFlip);
 
     res.status(201).render("link", { link: generateLink(req, coinFlip.uuid) });
@@ -49,7 +54,7 @@ app
   .route("/flip/:uuid")
   .get(
     asyncHandler(async (req, res) => {
-      const requestIp = req.ip;
+      const requestIp = getRequestIp(req);
       const coinFlip = (req as any).coinFlip as CoinFlip;
 
       res.status(200).render("flip", { coinFlip, requestIp });
@@ -57,7 +62,7 @@ app
   )
   .post(
     asyncHandler(async (req, res) => {
-      const requestIp = req.ip;
+      const requestIp = getRequestIp(req);
       const coinFlip = (req as any).coinFlip as CoinFlip;
 
       if (!coinFlip.result) {
