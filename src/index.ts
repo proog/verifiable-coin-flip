@@ -11,7 +11,7 @@ import { generateLink, getOptions } from "./web";
 let db: IDatabase;
 
 const app = express();
-app.set("trust proxy", true);
+app.set("trust proxy", process.env.TRUST_PROXY === "true");
 app.set("view engine", "pug");
 app.use(express.urlencoded());
 
