@@ -8,14 +8,14 @@ block head
       input.required = true;
       input.name = "options[]";
       input.placeholder = "additional option name";
-      input.classList.add("input", "is-large");
+      input.classList.add("input");
 
       var control = document.createElement("div");
       control.classList.add("is-flex-grow-1");
       control.appendChild(input);
 
       var deleteButton = document.createElement("button");
-      deleteButton.classList.add("delete", "is-large", "ml-4");
+      deleteButton.classList.add("delete", "ml-4");
 
       var field = document.createElement("div");
       field.classList.add("field", "is-grouped", "is-flex", "is-align-items-center");
@@ -44,7 +44,7 @@ block content
       #options.field
         each option in options
           .field
-            input.input.is-large(
+            input.input(
               type="text",
               required,
               name="options[]",
@@ -55,4 +55,4 @@ block content
         button.button.is-info.is-light(type="button", onclick="addOption()") Add option
       .field.mt-6
         .control
-          button.button.is-primary(type="submit") Generate link
+          button.button.is-primary.is-large(type="submit") Generate link

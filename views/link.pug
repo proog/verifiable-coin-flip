@@ -16,8 +16,7 @@ block content
       p.subtitle Your trusted Coin Flips as a Service (CFaaS) solution
   section.section
     label.label(for="link") Send this link (don't visit it yet!)
-    .field.has-addons
-      .control.is-expanded
-        input#link.input.is-large(type="text", readonly, value=link)
-      .control
-        button.button.is-primary.is-large(onclick="copyLink()") Copy link
+    .field
+      input#link.input(type="text", readonly, value=link)
+    .field
+      button.button.is-primary.is-large(onclick="copyLink()") Copy link
