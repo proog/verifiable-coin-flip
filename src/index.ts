@@ -17,7 +17,7 @@ if (process.env.TRUST_PROXY === "true") {
   app.set("trust proxy", true);
 }
 
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
 app.param("uuid", async (req, _res, next, uuid: string) => {
   try {
