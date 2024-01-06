@@ -24,9 +24,9 @@ function isValidOption(option: any): boolean {
 
 export function getRequestIp(req: Request) {
   if (!req.app.get("trust proxy")) {
-    return req.ip;
+    return req.ip || null;
   }
 
   // https://developers.cloudflare.com/fundamentals/get-started/reference/http-request-headers/#cf-connecting-ip
-  return req.header("cf-connecting-ip") || req.ip;
+  return req.header("cf-connecting-ip") || req.ip || null;
 }

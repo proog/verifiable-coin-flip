@@ -3,7 +3,7 @@ export type CoinFlip = {
   result: string | null;
   options: string[];
   createdAt: Date;
-  createdIp: string;
+  createdIp: string | null;
   flippedAt: Date | null;
   flippedIp: string | null;
 };

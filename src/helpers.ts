@@ -18,7 +18,7 @@ export function randomElement<T>(elements: T[]): T {
 export function createCoinFlip(
   uuid: string,
   options: string[],
-  requestIp: string
+  requestIp: string | null
 ): CoinFlip {
   return {
     uuid,
