@@ -8,15 +8,13 @@ export async function createDatabase(): Promise<IDatabase> {
 
   switch (process.env.DATABASE) {
     case "sqlite":
-      db = new SqliteDatabase(
-        process.env.SQLITE_FILENAME || "./data/coinflips.db"
-      );
+      db = new SqliteDatabase(process.env.SQLITE_FILENAME!);
       break;
     case "mongodb":
     default:
       db = new MongoDatabase(
-        process.env.MONGO_URI || "mongodb://localhost:27017",
-        process.env.MONGO_DATABASE || "verifiable-coin-flip"
+        process.env.MONGO_URI!,
+        process.env.MONGO_DATABASE!
       );
       break;
   }

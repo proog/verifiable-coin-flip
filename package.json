@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node build/index.js",
+    "start": "node -r dotenv/config build/index.js",
     "build": "tsc",
     "dev": "npm run build && npm run start"
   },
@@ -16,6 +16,7 @@
     "@types/node": "^22.5.4",
     "@types/pug": "^2.0.10",
     "@types/uuid": "^10.0.0",
+    "dotenv": "^16.4.7",
     "express": "^4.20.0",
     "express-async-handler": "^1.2.0",
     "mongodb": "^6.8.1",
