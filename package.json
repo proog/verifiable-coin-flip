@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node -r dotenv/config build/index.js",
     "build": "tsc",
-    "dev": "npm run build && npm run start"
+    "dev": "tsc --noEmit && tsx watch -r dotenv/config src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@prettier/plugin-pug": "^3.4.0",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.3"
   }
 }
