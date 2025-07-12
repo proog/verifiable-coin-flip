@@ -11,16 +11,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/better-sqlite3": "^7.6.13",
     "@types/express": "^5.0.3",
     "@types/mongodb": "^4.0.7",
     "@types/node": "^22.5.4",
     "@types/pug": "^2.0.10",
     "@types/uuid": "^10.0.0",
+    "better-sqlite3": "^12.2.0",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "mongodb": "^6.17.0",
     "pug": "^3.0.3",
-    "sqlite3": "^5.1.7",
     "typescript": "^5.8.3",
     "uuid": "^11.1.0"
   },

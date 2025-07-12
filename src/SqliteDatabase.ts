@@ -1,4 +1,4 @@
-import { Database } from "sqlite3";
+import sqlite3, { Database } from "better-sqlite3";
 import { CoinFlip } from "./CoinFlip";
 import { IDatabase } from "./IDatabase";
 
@@ -6,14 +6,14 @@ export class SqliteDatabase implements IDatabase {
   private _db: Database | null = null;
 
   private get db(): Database {
-    this._db ??= new Database(this.filename);
+    this._db ??= new sqlite3(this.filename);
     return this._db;
   }
 
   constructor(private readonly filename: string) {}
 
   async initialize(): Promise<void> {
-    const query = `
+    this.db.exec(`
       CREATE TABLE IF NOT EXISTS coinFlips (
         id INTEGER NOT NULL,
         uuid TEXT NOT NULL UNIQUE,
@@ -24,21 +24,13 @@ export class SqliteDatabase implements IDatabase {
         flippedAt TEXT NULL,
         flippedIp TEXT NULL,
         PRIMARY KEY(id AUTOINCREMENT)
-      )`;
-
-    await new Promise<void>((resolve, reject) => {
-      this.db.run(query, (err) => (err ? reject(err) : resolve()));
-    });
+      )`);
   }
 
   async getCoinFlip(uuid: string): Promise<CoinFlip | undefined> {
-    const row = await new Promise<Row | undefined>((resolve, reject) => {
-      this.db.get<Row | undefined>(
-        "SELECT * FROM coinFlips WHERE uuid = ?",
-        uuid,
-        (err, row) => (err ? reject(err) : resolve(row))
-      );
-    });
+    const row = this.db
+      .prepare<string, Row>("SELECT * FROM coinFlips WHERE uuid = ?")
+      .get(uuid);
 
     if (!row) {
       return undefined;
@@ -56,39 +48,35 @@ export class SqliteDatabase implements IDatabase {
   }
 
   async createCoinFlip(coinFlip: CoinFlip): Promise<void> {
-    await new Promise<void>((resolve, reject) => {
-      this.db.run(
-        `INSERT INTO coinFlips (uuid, result, options, createdAt, createdIp, flippedAt, flippedIp) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [
-          coinFlip.uuid,
-          coinFlip.result,
-          JSON.stringify(coinFlip.options),
-          coinFlip.createdAt.toISOString(),
-          coinFlip.createdIp,
-          coinFlip.flippedAt?.toISOString(),
-          coinFlip.flippedIp,
-        ],
-        (err) => (err ? reject(err) : resolve())
+    this.db
+      .prepare(
+        `INSERT INTO coinFlips (uuid, result, options, createdAt, createdIp, flippedAt, flippedIp) VALUES (?, ?, ?, ?, ?, ?, ?)`
+      )
+      .run(
+        coinFlip.uuid,
+        coinFlip.result,
+        JSON.stringify(coinFlip.options),
+        coinFlip.createdAt.toISOString(),
+        coinFlip.createdIp,
+        coinFlip.flippedAt?.toISOString(),
+        coinFlip.flippedIp
       );
-    });
   }
 
   async updateCoinFlip(coinFlip: CoinFlip): Promise<void> {
-    await new Promise<void>((resolve, reject) => {
-      this.db.run(
-        "UPDATE coinFlips SET result = ?, options = ?, createdAt = ?, createdIp = ?, flippedAt = ?, flippedIp = ? WHERE uuid = ?",
-        [
-          coinFlip.result,
-          JSON.stringify(coinFlip.options),
-          coinFlip.createdAt.toISOString(),
-          coinFlip.createdIp,
-          coinFlip.flippedAt?.toISOString(),
-          coinFlip.flippedIp,
-          coinFlip.uuid,
-        ],
-        (err) => (err ? reject(err) : resolve())
+    this.db
+      .prepare(
+        "UPDATE coinFlips SET result = ?, options = ?, createdAt = ?, createdIp = ?, flippedAt = ?, flippedIp = ? WHERE uuid = ?"
+      )
+      .run(
+        coinFlip.result,
+        JSON.stringify(coinFlip.options),
+        coinFlip.createdAt.toISOString(),
+        coinFlip.createdIp,
+        coinFlip.flippedAt?.toISOString(),
+        coinFlip.flippedIp,
+        coinFlip.uuid
       );
-    });
   }
 }
 
