@@ -6,7 +6,7 @@
 
 # Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
 
-ARG NODE_VERSION=22
+ARG NODE_VERSION=24
 
 ################################################################################
 # Use node image for base image for all stages.
@@ -19,6 +19,9 @@ WORKDIR /usr/src/app
 ################################################################################
 # Create a stage for installing production dependecies.
 FROM base AS deps
+
+# Install build toolchain for node-gyp, see https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#node-gyp-alpine
+RUN apk add --no-cache python3 make g++
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
